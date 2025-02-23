@@ -1,78 +1,79 @@
-![upscalemedia-transformed](https://github.com/user-attachments/assets/9a1aafb0-aae6-4089-b620-29ad8859c5d4)
+![image](https://github.com/user-attachments/assets/ef1a0b90-a3fa-48f1-b7b4-1bec740caa40)
 
-# OrgaNote - Musikverwaltung für Vereine
 
-## 🎶 Über das Projekt
-OrgaNote ist eine Webanwendung für Musikvereine zur Verwaltung von Musikstücken, Jahrgängen und Dateien. Die App bietet eine strukturierte Organisation nach **Verein > Jahrgang > Musikstück > Dateien** und ermöglicht eine einfache Verwaltung und Speicherung von Noten und weiteren Musikressourcen.
+# OrgaNote - Music Management for Associations
+
+## 🎶 About the Project
+OrgaNote is a web application designed for music associations to manage music pieces, years, and files. The app offers a structured organization based on **Association > Year > Music Piece > Files**, enabling easy management and storage of sheet music and other music resources.
 
 ## 💪 Features
-- Verwaltung mehrerer **Vereine**
-- Anlegen und Bearbeiten von **Jahrgängen**
-- Speichern und Verwalten von **Musikstücken** mit Detailinformationen
-- Upload und Verwaltung von **Dateien** (Noten, MP3, MIDI etc.)
-- REST API mit CRUD-Funktionalität
+- Manage multiple **associations**
+- Create and edit **years**
+- Store and manage **music pieces** with detailed information
+- Upload and manage **files** (sheet music, MP3, MIDI, etc.)
+- REST API with CRUD functionality
 
-## 🛠 Technologie-Stack
+## 🛠 Technology Stack
 ### Backend:
-- **Node.js** mit **Express.js**
-- **MongoDB** oder **PostgreSQL** für die Datenspeicherung
-- **Multer** für Datei-Uploads
+- **Node.js** with **Express.js**
+- **MongoDB** or **PostgreSQL** for data storage
+- **Multer** for file uploads
 
 ### Frontend:
-- **Vue.js 3** mit **Pinia** (State Management)
-- **TailwindCSS** für das Styling
-- **Axios** für API-Anfragen
+- **Vue.js 3** with **Pinia** (State Management)
+- **TailwindCSS** for styling
+- **Axios** for API requests
 
-## 📝 API Endpunkte (Beispiele)
-### Vereine:
-- `GET /api/clubs` - Alle Vereine abrufen
-- `POST /api/clubs` - Neuen Verein anlegen
+## 📝 API Endpoints (Examples)
+### Associations:
+- `GET /api/clubs` - Retrieve all associations
+- `POST /api/clubs` - Create a new association
 
-### Jahrgänge:
-- `GET /api/clubs/:clubId/years` - Jahrgänge abrufen
-- `POST /api/clubs/:clubId/years` - Neuen Jahrgang anlegen
+### Years:
+- `GET /api/clubs/:clubId/years` - Retrieve years
+- `POST /api/clubs/:clubId/years` - Create a new year
 
-### Musikstücke:
-- `GET /api/clubs/:clubId/years/:year/songs` - Alle Musikstücke eines Jahrgangs abrufen
-- `POST /api/clubs/:clubId/years/:year/songs` - Neues Musikstück anlegen
-- `DELETE /api/clubs/:clubId/years/:year/songs/:songId` - Musikstück löschen
+### Music Pieces:
+- `GET /api/clubs/:clubId/years/:year/songs` - Retrieve all music pieces of a year
+- `POST /api/clubs/:clubId/years/:year/songs` - Create a new music piece
+- `DELETE /api/clubs/:clubId/years/:year/songs/:songId` - Delete a music piece
 
-### Dateien:
-- `POST /api/clubs/:clubId/years/:year/songs/:songId/files` - Datei hochladen
-- `DELETE /api/clubs/:clubId/years/:year/songs/:songId/files/:fileId` - Datei löschen
+### Files:
+- `POST /api/clubs/:clubId/years/:year/songs/:songId/files` - Upload a file
+- `DELETE /api/clubs/:clubId/years/:year/songs/:songId/files/:fileId` - Delete a file
 
-## 🔧 Installation & Nutzung
-### Voraussetzungen:
+## 🔧 Installation & Usage
+### Requirements:
 - Node.js & npm
-- MongoDB oder PostgreSQL
+- MongoDB or PostgreSQL
 
-### Backend starten:
+### Start Backend:
 ```bash
 cd backend
 npm install
 npm start
 ```
 
-### Frontend starten:
+### Start Frontend:
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-## 🛡 Sicherheit & Authentifizierung
-- JWT-Authentifizierung für geschützte API-Endpunkte
-- Rollenmanagement (Admin, Benutzer)
+## 🛡 Security & Authentication
+- JWT authentication for protected API endpoints
+- Role management (Admin, User)
 
-## 📅 Zukünftige Features
-- Benutzerverwaltung mit Login-System
-- Playlist-Funktion für Proben
-- Erweiterte Such- und Filterfunktionen
+## 📅 Future Features
+- User management with login system
+- Playlist feature for rehearsals
+- Advanced search and filter functions
 
-## 👤 Mitwirkende
-- **[Dein Name]** - Projektleitung & Entwicklung
-- **Community & Feedback willkommen!**
+## 👤 Contributors
+- **[Your Name]** - Project lead & development
+- **Community & feedback welcome!**
 
-## 💡 Lizenz
-Dieses Projekt steht unter der MIT-Lizenz.
+## 💡 License
+This project is licensed under the MIT License.
 
