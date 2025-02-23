@@ -1,3 +1,5 @@
+![upscalemedia-transformed](https://github.com/user-attachments/assets/9a1aafb0-aae6-4089-b620-29ad8859c5d4)
+
 # OrgaNote - Musikverwaltung für Vereine
 
 ## 🎶 Über das Projekt
