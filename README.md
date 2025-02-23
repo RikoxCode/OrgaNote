@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/ef1a0b90-a3fa-48f1-b7b4-1bec740caa40)
+![upscalemedia-transformed](https://github.com/user-attachments/assets/9a1aafb0-aae6-4089-b620-29ad8859c5d4)
 
 
 # OrgaNote - Music Management for Associations
