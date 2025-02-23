@@ -71,7 +71,7 @@ npm run dev
 - Advanced search and filter functions
 
 ## 👤 Contributors
-- **[Your Name]** - Project lead & development
+- **RikoxCode** - Project lead & development
 - **Community & feedback welcome!**
 
 ## 💡 License
