@@ -1,0 +1,33 @@
+{
+    "name": "organote",
+    "version": "1.0.0",
+    "scripts": {
+        "prepare": "husky",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "commitlint": "commitlint --edit"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rikoxcode/organote.git"
+    },
+    "keywords": [
+        "organote",
+        "open-source",
+        "monorepo",
+        "music"
+    ],
+    "author": "RikoxCode",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/rikoxcode/organote/issues"
+    },
+    "homepage": "https://github.com/rikoxcode/organote#readme",
+    "devDependencies": {
+        "@commitlint/cli": "^19.7.1",
+        "@commitlint/config-conventional": "^19.7.1",
+        "husky": "^9.1.7",
+        "lint-staged": "^15.4.3",
+        "prettier": "^3.5.2"
+    }
+}
