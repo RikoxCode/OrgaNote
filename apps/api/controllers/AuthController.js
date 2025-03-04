@@ -4,9 +4,28 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
+async function generateToken(user, payload = {}) {
+
+    user.roles = await UserStore.getUserRoles(user.id)
+
+    if(user.password_hash) delete user.password_hash;
+    if(user.avatar) delete user.avatar;
+
+    payload = {
+        user,
+        exp: Date.now() + Number(process.env.JWT_EXPIRES_IN),
+        ...payload,
+    }
+
+    return jwt.sign(payload, process.env.JWT_SECRET)
+}
+
 class AuthController {
+
+    constructor() { }
+
     async register(req, res) {
-        const { username, realname, email, password } = req.body
+        const {username, realname, email, password} = req.body
         const createdAt = new Date()
         const updatedAt = new Date()
         const loginAt = new Date()
@@ -26,7 +45,7 @@ class AuthController {
                     Number(process.env.BCRYPT_SALT_ROUNDS)
                 )
 
-                const user = await UserStore.create(
+                let user = await UserStore.create(
                     username,
                     email,
                     passwordHash,
@@ -36,73 +55,75 @@ class AuthController {
                     loginAt
                 )
 
-                const { password_hash, ...responseUser } = user[0]
+                user.roles = await UserStore.getUserRoles(user.id)
 
-                const token = jwt.sign(
-                    { user: responseUser },
-                    process.env.JWT_SECRET,
-                    {
-                        expiresIn: process.env.JWT_EXPIRES_IN,
-                    }
-                )
+                const {password_hash, ...responseUser} = user[0]
 
-                res.status(200).json({ user: responseUser, token })
+                const token = await generateToken(user)
+
+                res.status(200).json({user: responseUser, token})
             }
         } catch (e) {
-            return res.status(400).json({ message: e.message })
+            return res.status(400).json({message: e.message})
         }
     }
 
     async login(req, res) {
-        const { email, password } = req.body
+        const {email, password} = req.body
 
-        const user = await UserStore.getByEmail(email)
+        let user = (await UserStore.getByEmail(email))[0]
 
         if (!user) {
-            return res.status(404).json({ message: 'User not found' })
+            return res.status(404).json({message: 'User not found'})
         }
 
-        const isPasswordValid = bcrypt.compareSync(password, user.password)
+        user.roles = await UserStore.getUserRoles(user.id)
+
+        const isPasswordValid = bcrypt.compareSync(password, user.password_hash)
 
         if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Invalid password' })
+            return res.status(401).json({message: 'Invalid password'})
         }
 
-        const { password_hash, ...responseUser } = user
+        const {password_hash, ...responseUser} = user
 
-        const token = jwt.sign({ user: responseUser }, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRES_IN,
-        })
+        const token = await generateToken(user)
 
-        res.status(200).json({ user: responseUser, token })
+        await UserStore.updateLogin(user.id, new Date())
+
+        res.status(200).json({user: responseUser, token})
     }
 
     async refresh(req, res) {
         try {
-            const user = await UserStore.getById(req.user.id)
+            let user = await UserStore.getById(req.user.id)
 
             if (!user) {
-                return res.status(404).json({ message: 'User not found' })
+                return res.status(404).json({message: 'User not found'})
             }
 
-            const token = jwt.sign({ user }, process.env.JWT_SECRET, {
-                expiresIn: process.env.JWT_EXPIRES_IN,
-            })
+            user.roles = await UserStore.getUserRoles(user.id)
 
-            res.status(200).json({ user, token })
+            const token = await generateToken(user)
+
+            await UserStore.updateLogin(user.id, new Date())
+
+            res.status(200).json({user, token})
         } catch (e) {
-            return res.status(400).json({ message: e.message })
+            return res.status(400).json({message: e.message})
         }
     }
 
     async me(req, res) {
-        const user = await UserStore.getById(req.user.id)
+        let user = await UserStore.getById(req.user.id)
 
         if (!user) {
-            return res.status(404).json({ message: 'User not found' })
+            return res.status(404).json({message: 'User not found'})
         }
 
-        res.status(200).json({ user })
+        user.roles = await UserStore.getUserRoles(user.id)
+
+        res.status(200).json({user})
     }
 }
 

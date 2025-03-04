@@ -10,6 +10,15 @@ class ClubController {
         }
     }
 
+    async getUserClubs(req, res) {
+        try {
+            const clubs = await clubStore.getClubsByUser(req.user.id)
+            res.json(clubs)
+        } catch (err) {
+            res.status(500).json({ error: err.message })
+        }
+    }
+
     async getById(req, res) {
         try {
             const { id } = req.params
@@ -28,6 +37,26 @@ class ClubController {
             res.status(201).json(newClub)
         } catch (err) {
             res.status(500).json({ error: err.message })
+        }
+    }
+
+    async addMember(req, res) {
+        try {
+            const { club_id, user_id } = req.body
+            const newMember = await clubStore.addMember(club_id, user_id)
+            res.status(201).json(newMember)
+        } catch (err) {
+            res.status(500).json({ error: err.message })
+        }
+    }
+
+    async removeMember(req, res) {
+        try {
+            const { club_id, user_id } = req.body
+            await clubStore.removeMember(club_id, user_id)
+            res.status(204).send()
+        } catch (err) {
+            res.status(500).json({error: err.message})
         }
     }
 

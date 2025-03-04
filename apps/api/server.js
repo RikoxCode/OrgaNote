@@ -11,13 +11,13 @@ const app = express()
 
 // Import routes
 const fileRoutes = require('./routers/FileRouter')
+const userRoutes = require('./routers/UserRouter')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 const clubRoutes = require('./routers/ClubRouter')
 const projectRoutes = require('./routers/ProjectRouter')
-const userRoutes = require('./routers/UserRouter')
 const songRoutes = require('./routers/SongRouter')
 const performanceRoutes = require('./routers/PerformanceRouter')
 const genreRoutes = require('./routers/GenreRouter')
@@ -47,6 +47,15 @@ const swaggerOptions = {
                 description: 'Development server',
             },
         ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
+        },
     },
     apis: ['./routers/*.js'], // Pfad zu den API-Routen
 }

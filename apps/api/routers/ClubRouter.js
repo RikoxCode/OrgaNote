@@ -1,5 +1,6 @@
 const express = require('express')
 const clubController = require('../controllers/ClubController')
+const MemberGuard = require('../guards/MemberGuard')
 
 /**
  * @swagger
@@ -11,7 +12,7 @@ const router = express.Router()
 
 /**
  * @swagger
- * /api/clubs:
+ * /api/clubs/all:
  *      get:
  *          tags: [Clubs]
  *          summary: Get all clubs
@@ -26,7 +27,28 @@ const router = express.Router()
  *              400:
  *                  description: Missing or invalid parameters
  */
-router.get('/', clubController.getAll)
+router.get('/all', clubController.getAll)
+
+/**
+ * @swagger
+ * /api/clubs:
+ *     get:
+ *          security:
+ *              - bearerAuth: []
+ *          tags: [Clubs]
+ *          summary: Get clubs by user
+ *          description: This route calls the getUserClubs controller
+ *          responses:
+ *               200:
+ *                   description: Successful response with club data
+ *               500:
+ *                   description: Server error
+ *               404:
+ *                   description: No clubs found
+ *               400:
+ *                   description: Missing or invalid parameters
+ */
+router.get('/', MemberGuard.middleware,  clubController.getUserClubs)
 
 /**
  * @swagger
@@ -88,6 +110,41 @@ router.get('/:id', clubController.getById)
  *                    description: Missing or invalid parameters
  */
 router.post('/', clubController.create)
+
+/**
+ * @swagger
+ * /api/clubs/member:
+ *      post:
+ *          tags: [Clubs]
+ *          summary: Add a member to a club
+ *          description: This route adds a member to a club.
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          required:
+ *                              - club_id
+ *                              - user_id
+ *                          properties:
+ *                              club_id:
+ *                                  type: integer
+ *                                  description: The ID of the club
+ *                              user_id:
+ *                                  type: integer
+ *                                  description: The ID of the user
+ *          responses:
+ *                200:
+ *                    description: Successful response with club data
+ *                500:
+ *                    description: Server error
+ *                404:
+ *                    description: No clubs found
+ *                400:
+ *                    description: Missing or invalid parameters
+ */
+router.post('/member', clubController.addMember)
 
 /**
  * @swagger
@@ -153,5 +210,40 @@ router.put('/:id', clubController.update)
  *                    description: Missing or invalid parameters
  */
 router.delete('/:id', clubController.delete)
+
+/**
+ * @swagger
+ * /api/clubs/member:
+ *      delete:
+ *          tags: [Clubs]
+ *          summary: Remove a member from a club
+ *          description: This route removes a member from a club.
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          required:
+ *                              - club_id
+ *                              - user_id
+ *                          properties:
+ *                              club_id:
+ *                                  type: integer
+ *                                  description: The ID of the club
+ *                              user_id:
+ *                                  type: integer
+ *                                  description: The ID of the user
+ *          responses:
+ *                200:
+ *                    description: Successful response with club data
+ *                500:
+ *                    description: Server error
+ *                404:
+ *                    description: No clubs found
+ *                400:
+ *                    description: Missing or invalid parameters
+ */
+router.delete('/member', clubController.removeMember)
 
 module.exports = router

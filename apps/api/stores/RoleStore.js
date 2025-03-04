@@ -3,7 +3,7 @@ const BaseStore = require('./BaseStore')
 class RoleStore extends BaseStore {
     async addRoleToUser(userId, roleId) {
         return await this.exec(
-            'INSERT INTO user_roles (user_id, role_id) VALUES ($1, $2)',
+            'INSERT INTO user_roles (user_id, role_id) VALUES ($1, $2) RETURNING *',
             [userId, roleId]
         )
     }

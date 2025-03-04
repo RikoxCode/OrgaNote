@@ -78,13 +78,24 @@ class UserController {
         }
     }
 
+    async setAvatar(req, res) {
+        try {
+            const { user_id } = req.body
+            const { buffer } = req.file
+            const updated_at = new Date
+            const user = await UserStore.setAvatar(user_id, buffer, updated_at)
+            res.json(user)
+        } catch (error) {
+            res.status(500).json({ error: error.message })
+        }
+    }
+
     async update(req, res) {
         try {
             const {
                 id,
                 username,
                 email,
-                password_hash,
                 realname,
                 created_at,
                 updated_at,
@@ -94,7 +105,6 @@ class UserController {
                 id,
                 username,
                 email,
-                password_hash,
                 realname,
                 created_at,
                 updated_at,
