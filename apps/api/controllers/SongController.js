@@ -59,7 +59,8 @@ class SongController {
 
     async create(req, res) {
         try {
-            const { title, description, composer, genres, project_id } = req.body
+            const { title, description, composer, genres, project_id } =
+                req.body
             let song = await SongStore.saveSong(
                 title,
                 description,

@@ -127,6 +127,10 @@ router.post('/add', ConductorGuard.middleware, roleController.addRoleToUser)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.post('/remove', ConductorGuard.middleware, roleController.removeRoleFromUser)
+router.post(
+    '/remove',
+    ConductorGuard.middleware,
+    roleController.removeRoleFromUser
+)
 
 module.exports = router

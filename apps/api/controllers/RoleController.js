@@ -4,16 +4,23 @@ class RoleController {
     async addRoleToUser(req, res) {
         const { userId, roleId } = req.body
 
-        if(!req.user.roles.includes('admin')) {
-
+        if (!req.user.roles.includes('admin')) {
             const role = await RoleStore.getByID(roleId)
 
-            if(role.name.toLowerCase().includes('admin')) {
-                return res.status(403).json({message: 'You are not allowed to add an admin role'})
+            if (role.name.toLowerCase().includes('admin')) {
+                return res
+                    .status(403)
+                    .json({
+                        message: 'You are not allowed to add an admin role',
+                    })
             }
 
-            if(role.name.toLowerCase().includes('conductor')) {
-                return res.status(403).json({message: 'You are not allowed to add a conductor role'})
+            if (role.name.toLowerCase().includes('conductor')) {
+                return res
+                    .status(403)
+                    .json({
+                        message: 'You are not allowed to add a conductor role',
+                    })
             }
         }
 
@@ -30,16 +37,24 @@ class RoleController {
     async removeRoleFromUser(req, res) {
         const { userId, roleId } = req.body
 
-        if(!req.user.roles.includes('admin')) {
-
+        if (!req.user.roles.includes('admin')) {
             const role = await RoleStore.getByID(roleId)
 
-            if(role.name.toLowerCase().includes('admin')) {
-                return res.status(403).json({message: 'You are not allowed to remove an admin role'})
+            if (role.name.toLowerCase().includes('admin')) {
+                return res
+                    .status(403)
+                    .json({
+                        message: 'You are not allowed to remove an admin role',
+                    })
             }
 
-            if(role.name.toLowerCase().includes('conductor')) {
-                return res.status(403).json({message: 'You are not allowed to remove a conductor role'})
+            if (role.name.toLowerCase().includes('conductor')) {
+                return res
+                    .status(403)
+                    .json({
+                        message:
+                            'You are not allowed to remove a conductor role',
+                    })
             }
         }
         try {

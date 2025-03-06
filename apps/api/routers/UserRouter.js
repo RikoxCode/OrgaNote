@@ -106,6 +106,11 @@ router.get('/search', MemberGuard.middleware, userController.search)
  *       500:
  *         description: Server error
  */
-router.post('/avatar', upload.single('avatar'), AdminGuard.middleware, userController.setAvatar)
+router.post(
+    '/avatar',
+    upload.single('avatar'),
+    AdminGuard.middleware,
+    userController.setAvatar
+)
 
 module.exports = router

@@ -60,7 +60,11 @@ router.get('/', AdminGuard.middleware, songController.getAll)
  *              400:
  *                  description: Missing or invalid parameters
  */
-router.get('/project/:project_id', MemberGuard.middleware, songController.getAllProjectSongs)
+router.get(
+    '/project/:project_id',
+    MemberGuard.middleware,
+    songController.getAllProjectSongs
+)
 
 /**
  * @swagger

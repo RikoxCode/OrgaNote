@@ -61,7 +61,6 @@ class BaseGuard {
      * @returns {function(*, *, *): Promise<void>}
      */
     async middleware(req, res, next) {
-
         const isAllowed = await this.canActivate(req)
 
         if (isAllowed) {

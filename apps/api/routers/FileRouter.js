@@ -50,7 +50,12 @@ const router = express.Router()
  *       500:
  *         description: Server error
  */
-router.post('/upload', upload.single('file'), ConductorGuard.middleware, fileController.uploadFile)
+router.post(
+    '/upload',
+    upload.single('file'),
+    ConductorGuard.middleware,
+    fileController.uploadFile
+)
 
 /**
  * @swagger
