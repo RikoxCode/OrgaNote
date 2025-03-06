@@ -2,6 +2,7 @@
 const express = require('express')
 const multer = require('multer')
 const fileController = require('../controllers/FileController')
+const ConductorGuard = require('../guards/ConductorGuard')
 
 // Multer-Konfiguration (Datei im Speicher halten)
 const upload = multer({ storage: multer.memoryStorage() })
@@ -18,6 +19,8 @@ const router = express.Router()
  * @swagger
  * /api/files/upload:
  *   post:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Uploads a file
  *     tags: [Files]
  *     consumes:
@@ -47,12 +50,14 @@ const router = express.Router()
  *       500:
  *         description: Server error
  */
-router.post('/upload', upload.single('file'), fileController.uploadFile)
+router.post('/upload', upload.single('file'), ConductorGuard.middleware, fileController.uploadFile)
 
 /**
  * @swagger
  * /api/files/single/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Retrieves a file by ID
  *     tags: [Files]
  *     parameters:
@@ -70,12 +75,14 @@ router.post('/upload', upload.single('file'), fileController.uploadFile)
  *       500:
  *         description: Server error
  */
-router.get('/single/:id', fileController.getFile)
+router.get('/single/:id', ConductorGuard.middleware, fileController.getFile)
 
 /**
  * @swagger
  * /api/files/{song_id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Retrieves all files for a song
  *     tags: [Files]
  *     parameters:
@@ -93,12 +100,14 @@ router.get('/single/:id', fileController.getFile)
  *       500:
  *         description: Server error
  */
-router.get('/:song_id', fileController.getFiles)
+router.get('/:song_id', ConductorGuard.middleware, fileController.getFiles)
 
 /**
  * @swagger
  * /api/files/{id}:
  *   delete:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Deletes a file by ID
  *     tags: [Files]
  *     parameters:
@@ -116,6 +125,6 @@ router.get('/:song_id', fileController.getFiles)
  *       500:
  *         description: Server error
  */
-router.delete('/:id', fileController.deleteFile)
+router.delete('/:id', ConductorGuard.middleware, fileController.deleteFile)
 
 module.exports = router

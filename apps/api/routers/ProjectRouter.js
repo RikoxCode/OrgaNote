@@ -1,5 +1,7 @@
 const express = require('express')
 const projectController = require('../controllers/ProjectController')
+const AdminGuard = require('../guards/AdminGuard')
+const ConductorGuard = require('../guards/ConductorGuard')
 
 /**
  * @swagger
@@ -13,6 +15,8 @@ const router = express.Router()
  * @swagger
  * /api/projects:
  *      get:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Projects]
  *          summary: Get all projects (only for administators)
  *          description: This route calls the getAll controller.
@@ -26,12 +30,14 @@ const router = express.Router()
  *              400:
  *                  description: Missing or invalid parameters
  */
-router.get('/', projectController.getAll)
+router.get('/', AdminGuard.middleware, projectController.getAll)
 
 /**
  * @swagger
  * /api/projects/{id}:
  *      get:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Projects]
  *          summary: Get a project by id
  *          description: This route calls the getById controller.
@@ -52,12 +58,14 @@ router.get('/', projectController.getAll)
  *              400:
  *                  description: Missing or invalid parameters
  */
-router.get('/:id', projectController.getById)
+router.get('/:id', AdminGuard.middleware, projectController.getById)
 
 /**
  * @swagger
  * /api/projects:
  *      post:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Projects]
  *          summary: Create a new project
  *          description: This route creates a new project.
@@ -99,6 +107,6 @@ router.get('/:id', projectController.getById)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.post('/', projectController.create)
+router.post('/', ConductorGuard.middleware, projectController.create)
 
 module.exports = router

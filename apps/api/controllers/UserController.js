@@ -52,6 +52,16 @@ class UserController {
         }
     }
 
+    async search(req, res) {
+        try {
+            const { keyword, value } = req.query
+            const users = await UserStore.search(keyword, value)
+            res.json(users)
+        } catch (error) {
+            res.status(500).json({ error: error.message })
+        }
+    }
+
     async create(req, res) {
         try {
             const {
@@ -82,7 +92,7 @@ class UserController {
         try {
             const { user_id } = req.body
             const { buffer } = req.file
-            const updated_at = new Date
+            const updated_at = new Date()
             const user = await UserStore.setAvatar(user_id, buffer, updated_at)
             res.json(user)
         } catch (error) {

@@ -1,5 +1,6 @@
 const express = require('express')
 const authController = require('../controllers/AuthController')
+const MemberGuard = require('../guards/MemberGuard')
 
 /**
  * @swagger
@@ -93,6 +94,8 @@ router.post('/login', authController.login)
  * @swagger
  * /api/auth/refresh:
  *      get:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Auth]
  *          summary: Refresh user token
  *          description: This route calls the refresh controller.
@@ -104,12 +107,14 @@ router.post('/login', authController.login)
  *              400:
  *                  description: Missing or invalid parameters
  */
-router.get('/refresh', authController.refresh)
+router.get('/refresh', MemberGuard.middleware, authController.refresh)
 
 /**
  * @swagger
  * /api/auth/me:
  *      get:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Auth]
  *          summary: Get user data
  *          description: This route calls the me controller.
@@ -121,6 +126,6 @@ router.get('/refresh', authController.refresh)
  *              400:
  *                  description: Missing or invalid parameters
  */
-router.get('/me', authController.me)
+router.get('/me', MemberGuard.middleware, authController.me)
 
 module.exports = router

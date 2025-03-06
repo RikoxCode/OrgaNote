@@ -1,4 +1,51 @@
-<script setup lang="ts"></script>
+<script setup>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useToken } from '@/core/auth.js'
+import { login } from '@/core/request.js'
+
+const { setToken, setUser } = useToken()
+const email = ref('')
+const password = ref('')
+const router = useRouter()
+const isValid = computed(() => {
+    if (!email.value != '' || !password.value != '') {
+        return false
+    }
+
+    // Check if email is valid
+    if (email.value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(email.value)) {
+            return false
+        }
+    }
+
+    // Check if password is valid
+    if (password.value) {
+        if (password.value.length < 8 || password.value.length > 100) {
+            return false
+        }
+    }
+
+    return true
+})
+
+const signIn = async () => {
+    try {
+        const response = await login(email.value, password.value)
+
+        // If login is successful, redirect to home page
+        if (response) {
+            setToken(response.token)
+            setUser(response.user)
+            router.push('/')
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+</script>
 
 <template>
     <!-- component -->
@@ -15,6 +62,7 @@
                     >
                     <input
                         type="email"
+                        v-model="email"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                         placeholder="your@email.com"
                     />
@@ -26,30 +74,17 @@
                     >
                     <input
                         type="password"
+                        v-model="password"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                         placeholder="••••••••"
                     />
                 </div>
 
-                <div class="flex items-center justify-between">
-                    <label class="flex items-center">
-                        <input
-                            type="checkbox"
-                            class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                        <span class="ml-2 text-sm text-gray-600"
-                            >Remember me</span
-                        >
-                    </label>
-                    <a
-                        href="#"
-                        class="text-sm text-blue-600 hover:text-blue-500"
-                        >Forgot password?</a
-                    >
-                </div>
-
                 <button
+                    @click.prevent="signIn"
+                    :disabled="!isValid"
                     class="w-full bg-gray-700 hover:bg-gray-500 text-white font-medium py-2.5 rounded-lg transition-colors"
+                    :class="{ 'cursor-not-allowed bg-gray-500': !isValid }"
                 >
                     Sign In
                 </button>

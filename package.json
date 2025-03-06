@@ -7,6 +7,7 @@
         "format:check": "prettier --check .",
         "commitlint": "commitlint --edit",
         "start": "concurrently \"npm run start:api\" \"npm run start:web\"",
+        "start:dev": "concurrently \"npm run start:api:dev\" \"npm run start:web:dev\"",
         "start:api": "cd apps/api && npm start",
         "start:web": "cd apps/OrgaNote && npm start",
         "start:web:dev": "cd apps/OrgaNote && npm run dev",

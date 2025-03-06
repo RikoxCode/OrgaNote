@@ -1,5 +1,8 @@
 const express = require('express')
 const songController = require('../controllers/SongController')
+const AdminGuard = require('../guards/AdminGuard')
+const ConductorGuard = require('../guards/ConductorGuard')
+const MemberGuard = require('../guards/MemberGuard')
 
 /**
  * @swagger
@@ -13,6 +16,8 @@ const router = express.Router()
  * @swagger
  * /api/songs:
  *      get:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Songs]
  *          summary: Get all songs (Only for administators)
  *          description: This route calls the getAll controller.
@@ -26,15 +31,25 @@ const router = express.Router()
  *              400:
  *                  description: Missing or invalid parameters
  */
-router.get('/', songController.getAll)
+router.get('/', AdminGuard.middleware, songController.getAll)
 
 /**
  * @swagger
  * /api/songs/project/{project_id}:
  *      get:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Songs]
  *          summary: Get all project songs
  *          description: This route calls the getAllProjectSongs controller.
+ *          parameters:
+ *              - in: path
+ *                name: project_id
+ *                required: true
+ *                schema:
+ *                    type: integer
+ *                description: The id of the project
+ *
  *          responses:
  *              200:
  *                  description: Successful response with song data
@@ -45,15 +60,24 @@ router.get('/', songController.getAll)
  *              400:
  *                  description: Missing or invalid parameters
  */
-router.get('/', songController.getAllProjectSongs)
+router.get('/project/:project_id', MemberGuard.middleware, songController.getAllProjectSongs)
 
 /**
  * @swagger
  * /api/songs/{id}:
  *      get:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Songs]
  *          summary: Get song by id
  *          description: This route calls the getById controller
+ *          parameters:
+ *              - in: path
+ *                name: id
+ *                required: true
+ *                schema:
+ *                    type: integer
+ *                description: The id of the project
  *          responses:
  *              200:
  *                  description: Successful response with song data
@@ -64,12 +88,14 @@ router.get('/', songController.getAllProjectSongs)
  *              400:
  *                  description: Missing or invalid parameters
  */
-router.get('/', songController.getById)
+router.get('/:id', ConductorGuard.middleware, songController.getById)
 
 /**
  * @swagger
  * /api/songs:
  *      post:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Songs]
  *          summary: Create a new song
  *          description: This route calls the create controller.
@@ -111,12 +137,14 @@ router.get('/', songController.getById)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.post('/', songController.create)
+router.post('/', ConductorGuard.middleware, songController.create)
 
 /**
  * @swagger
  * /api/songs:
  *      put:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Songs]
  *          summary: Create a new song
  *          description: This route calls the create controller.
@@ -158,12 +186,14 @@ router.post('/', songController.create)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.post('/', songController.update)
+router.post('/', ConductorGuard.middleware, songController.update)
 
 /**
  * @swagger
  * /api/songs/{id}:
  *      delete:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Songs]
  *          summary: Delete a song
  *          description: This route calls the delete controller.
@@ -184,6 +214,6 @@ router.post('/', songController.update)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.delete('/:id', songController.delete)
+router.delete('/:id', ConductorGuard.middleware, songController.delete)
 
 module.exports = router

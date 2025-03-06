@@ -1,5 +1,6 @@
 const express = require('express')
 const genreController = require('../controllers/GenreController')
+const ConductorGuard = require('../guards/ConductorGuard')
 
 /**
  * @swagger
@@ -58,6 +59,8 @@ router.get('/:id', genreController.getById)
  * @swagger
  * /api/genres:
  *      post:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Genres]
  *          summary: Create a new genre
  *          description: This route calls the create controller
@@ -87,12 +90,14 @@ router.get('/:id', genreController.getById)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.post('/', genreController.create)
+router.post('/', ConductorGuard.middleware, genreController.create)
 
 /**
  * @swagger
  * /api/genres:
  *      put:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Genres]
  *          summary: Updates a genre
  *          description: This route calls the update controller
@@ -126,12 +131,14 @@ router.post('/', genreController.create)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.put('/', genreController.update)
+router.put('/', ConductorGuard.middleware, genreController.update)
 
 /**
  * @swagger
  * /api/genres/{id}:
  *      delete:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Genres]
  *          summary: Deletes a genre
  *          description: This route calls the delete controller
@@ -152,6 +159,6 @@ router.put('/', genreController.update)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.delete('/:id', genreController.delete)
+router.delete('/:id', ConductorGuard.middleware, genreController.delete)
 
 module.exports = router

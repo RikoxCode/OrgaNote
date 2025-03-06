@@ -1,6 +1,8 @@
 const express = require('express')
 const clubController = require('../controllers/ClubController')
 const MemberGuard = require('../guards/MemberGuard')
+const AdminGuard = require('../guards/AdminGuard')
+const ConductorGuard = require('../guards/ConductorGuard')
 
 /**
  * @swagger
@@ -14,6 +16,8 @@ const router = express.Router()
  * @swagger
  * /api/clubs/all:
  *      get:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Clubs]
  *          summary: Get all clubs
  *          description: This route calls the getAll controller.
@@ -27,7 +31,7 @@ const router = express.Router()
  *              400:
  *                  description: Missing or invalid parameters
  */
-router.get('/all', clubController.getAll)
+router.get('/all', AdminGuard.middleware, clubController.getAll)
 
 /**
  * @swagger
@@ -48,12 +52,14 @@ router.get('/all', clubController.getAll)
  *               400:
  *                   description: Missing or invalid parameters
  */
-router.get('/', MemberGuard.middleware,  clubController.getUserClubs)
+router.get('/', MemberGuard.middleware, clubController.getUserClubs)
 
 /**
  * @swagger
  * /api/clubs/{id}:
  *     get:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Clubs]
  *          summary: Get club by id
  *          description: This route calls the getById controller
@@ -74,12 +80,14 @@ router.get('/', MemberGuard.middleware,  clubController.getUserClubs)
  *               400:
  *                   description: Missing or invalid parameters
  */
-router.get('/:id', clubController.getById)
+router.get('/:id', MemberGuard.middleware, clubController.getById)
 
 /**
  * @swagger
  * /api/clubs:
  *      post:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Clubs]
  *          summary: Create a new club
  *          description: This route creates a new club.
@@ -109,12 +117,14 @@ router.get('/:id', clubController.getById)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.post('/', clubController.create)
+router.post('/', MemberGuard.middleware, clubController.create)
 
 /**
  * @swagger
  * /api/clubs/member:
  *      post:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Clubs]
  *          summary: Add a member to a club
  *          description: This route adds a member to a club.
@@ -144,12 +154,14 @@ router.post('/', clubController.create)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.post('/member', clubController.addMember)
+router.post('/member', ConductorGuard.middleware, clubController.addMember)
 
 /**
  * @swagger
  * /api/clubs/{id}:
  *      put:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Clubs]
  *          summary: Update a club
  *          description: This route updates a club based on the provided ID.
@@ -183,12 +195,14 @@ router.post('/member', clubController.addMember)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.put('/:id', clubController.update)
+router.put('/:id', ConductorGuard.middleware, clubController.update)
 
 /**
  * @swagger
  * /api/clubs/{id}:
  *      delete:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Clubs]
  *          summary: Delete a club
  *          description: This route deletes a club based on the provided ID.
@@ -209,12 +223,14 @@ router.put('/:id', clubController.update)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.delete('/:id', clubController.delete)
+router.delete('/:id', ConductorGuard.middleware, clubController.delete)
 
 /**
  * @swagger
  * /api/clubs/member:
  *      delete:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Clubs]
  *          summary: Remove a member from a club
  *          description: This route removes a member from a club.
@@ -244,6 +260,6 @@ router.delete('/:id', clubController.delete)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.delete('/member', clubController.removeMember)
+router.delete('/member', ConductorGuard.middleware, clubController.removeMember)
 
 module.exports = router

@@ -9,7 +9,7 @@ class UserStore extends BaseStore {
 
     async search(keyword, value) {
         return await this.exec(
-            `SELECT id, username, realname, email, avatar, created_at, updated_at, logged_in_at FROM users WHERE ${keyword} = %$1%`,
+            `SELECT id, username, realname, email, avatar, created_at, updated_at, logged_in_at FROM users WHERE ${keyword} LIKE '%' || $1 || '%'`,
             [value]
         )
     }

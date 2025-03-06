@@ -78,6 +78,17 @@ app.use('/api/songs', songRoutes)
 app.use('/api/performances', performanceRoutes)
 app.use('/api/files', fileRoutes)
 app.use('/api/roles', roleRoutes)
+app.use('/favicon.ico', express.static('public/icon.ico'))
+
+// redirect to /api-docs
+app.get('/', (req, res) => {
+    res.redirect('/api-docs')
+})
+
+// Error handling
+app.use((req, res) => {
+    res.status(404).json({ error: 'Not found' })
+})
 
 // Start server
 app.listen(process.env.API_PORT, process.env.API_HOST, () => {

@@ -22,34 +22,24 @@ class BaseGuard {
      * @returns {Promise<boolean>}
      */
     async checkToken(req) {
-
-        console.log("check token step 1")
         const authHeader = req.headers['authorization']
 
-        console.log("check token step 2")
         if (!authHeader) return false
         if (!authHeader.toLowerCase().includes('bearer')) return false
 
-        console.log("check token step 3")
         const token = authHeader.split(' ')[1]
         if (!token) return false
 
-        console.log("check token step 4")
         // Check if token is expired
-        const decodedToken = this.jwt.decode(token, {complete: true})
-
-        console.log(decodedToken.payload.exp * 1000)
-        console.log(Date.now())
+        const decodedToken = this.jwt.decode(token, { complete: true })
 
         if (decodedToken.payload.exp * 1000 < Date.now()) return false
 
-        console.log("check token step 5")
         try {
             req.data = this.jwt.verify(token, this.secret)
             req.user = req.data.user
             return true
         } catch (error) {
-            console.log("check token error")
             console.error(error)
             return false
         }
@@ -71,17 +61,13 @@ class BaseGuard {
      * @returns {function(*, *, *): Promise<void>}
      */
     async middleware(req, res, next) {
-        console.log("Middleware wurde aufgerufen!");
 
-        const isAllowed = await this.canActivate(req);
-        console.log("Token checked, isAllowed:", isAllowed);
+        const isAllowed = await this.canActivate(req)
 
         if (isAllowed) {
-            console.log("Token ist gültig, next() wird aufgerufen!");
-            return next();
+            return next()
         } else {
-            console.log("Token ist ungültig, 401 wird gesendet!");
-            return res.status(401).json({message: 'Unauthorized'}).end();
+            return res.status(401).json({ message: 'Unauthorized' }).end()
         }
     }
 }

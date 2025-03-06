@@ -6,9 +6,10 @@ class ClubStore extends BaseStore {
     }
 
     async getClubsByUser(userId) {
-        return await this.exec('SELECT c.* FROM clubs AS c JOIN user_club AS uc ON c.id = uc.club_id WHERE uc.user_id = $1;', [
-            userId,
-        ])
+        return await this.exec(
+            'SELECT c.* FROM clubs AS c JOIN user_club AS uc ON c.id = uc.club_id WHERE uc.user_id = $1;',
+            [userId]
+        )
     }
 
     async getById(id) {
@@ -35,7 +36,10 @@ class ClubStore extends BaseStore {
     }
 
     async removeMember(clubId, userId) {
-        await this.exec('DELETE FROM user_club WHERE club_id = $1 AND user_id = $2', [clubId, userId])
+        await this.exec(
+            'DELETE FROM user_club WHERE club_id = $1 AND user_id = $2',
+            [clubId, userId]
+        )
         return { message: 'Member removed' }
     }
 

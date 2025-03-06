@@ -1,5 +1,6 @@
 const express = require('express')
 const roleController = require('../controllers/RoleController')
+const ConductorGuard = require('../guards/ConductorGuard')
 
 /**
  * @swagger
@@ -35,6 +36,13 @@ router.get('/', roleController.getAll)
  *          tags: [Roles]
  *          summary: Get a role by ID
  *          description: This route calls the getById controller.
+ *          parameters:
+ *              - in: path
+ *                name: id
+ *                required: true
+ *                schema:
+ *                    type: integer
+ *                description: The id of the role
  *          responses:
  *              200:
  *                  description: Successful response with role data
@@ -51,6 +59,8 @@ router.get('/:id', roleController.getById)
  * @swagger
  * /api/roles/add:
  *      post:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Roles]
  *          summary: Add a role to a user
  *          description: This route calls the addRoleToUser controller.
@@ -80,12 +90,14 @@ router.get('/:id', roleController.getById)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.post('/add', roleController.addRoleToUser)
+router.post('/add', ConductorGuard.middleware, roleController.addRoleToUser)
 
 /**
  * @swagger
  * /api/roles/remove:
  *      post:
+ *          security:
+ *              - bearerAuth: []
  *          tags: [Roles]
  *          summary: Remove a role from a user
  *          description: This route calls the removeRoleFromUser controller.
@@ -115,6 +127,6 @@ router.post('/add', roleController.addRoleToUser)
  *                400:
  *                    description: Missing or invalid parameters
  */
-router.post('/remove', roleController.removeRoleFromUser)
+router.post('/remove', ConductorGuard.middleware, roleController.removeRoleFromUser)
 
 module.exports = router
